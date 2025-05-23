@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: wrappedmini
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            client-id: 5adf38e5255f4fc0b603044d9db04a68
+            client-secret: e8c9d47b06ad4d76ae5d97ac8403984b
+            scope: user-read-private,user-read-email,user-top-read,user-read-recently-played
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            client-name: Spotify
+        provider:
+          spotify:
+            authorization-uri: https://accounts.spotify.com/authorize
+            token-uri: https://accounts.spotify.com/api/token
+            user-info-uri: https://api.spotify.com/v1/me
+            user-name-attribute: id

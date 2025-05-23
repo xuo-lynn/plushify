@@ -89,38 +89,44 @@ public class HomeController {
 
         // Build HTML response with user profile, top songs, and top artists
         StringBuilder html = new StringBuilder();
+        html.append("<body style='background-color: #f8e1e7;'>");
         html.append("<h2>User Profile</h2>");
-        html.append("Display Name: ").append(userProfile.getDisplayName()).append("<br/>");
-        html.append("Profile Image: <img src='").append(userProfile.getProfileImage()).append("' alt='Profile Image' style='width:100px;height:100px;'><br/><br/>");
-
-        html.append("<h2>Your Top Tracks</h2>");
+        html.append("<div style='text-align: center; font-family: Arial, sans-serif;'>");
+        html.append("<img style='border-radius: 50%; width: 150px; height: 150px;' src='").append(userProfile.getProfileImage()).append("' alt='Profile Image'>");
+        html.append("<div style='font-size: 24px; font-weight: bold; color: white;'>").append(userProfile.getDisplayName()).append("</div>");
+        html.append("<div style='margin-top: 20px;'>");
+        html.append("<h2 style='color: white;'>Your Top Tracks</h2>");
         if (!topSongs.isEmpty()) {
             for (SongModel song : topSongs) {
-                html.append("<div style='margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;'>");
+                html.append("<div style='display: flex; align-items: center; background-color: #f8e1e7; color: #333; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 2px solid #f4c2c2;'>");
                 if (song.getAlbumImage() != null && !song.getAlbumImage().isEmpty()) {
-                    html.append("<img style='float: left; margin-right: 15px; width: 100px; height: 100px;' src='")
+                    html.append("<img style='width: 60px; height: 60px; border-radius: 4px; margin-right: 15px;' src='")
                         .append(song.getAlbumImage())
                         .append("' alt='Album Cover'>");
                 }
-                html.append("<div style='margin-left: 115px;'>");
-                html.append("<div style='font-weight: bold; font-size: 18px;'>").append(song.getTitle()).append("</div>");
+                html.append("<div style='flex-grow: 1;'>");
+                html.append("<div style='color: white;'>").append(song.getTitle()).append("</div>");
                 if (song.getArtists() != null && !song.getArtists().isEmpty()) {
-                    html.append("<div style='color: #666; margin-bottom: 5px;'>by ").append(String.join(", ", song.getArtists())).append("</div>");
+                    html.append("<div style='color: #b3b3b3;'>").append(String.join(", ", song.getArtists()));
+                    if (song.getAlbum() != null && !song.getAlbum().isEmpty()) {
+                        html.append(" • ").append(song.getAlbum());
+                    }
+                    html.append("</div>");
                 }
-                html.append("<div style='font-style: italic; color: #888;'>Album: ").append(song.getAlbum()).append("</div>");
+                html.append("<div style='color: #b3b3b3;'>");
                 if (song.getDuration() != null) {
                     int minutes = song.getDuration() / 60000;
                     int seconds = (song.getDuration() % 60000) / 1000;
-                    html.append("<div>Duration: ").append(minutes).append(":").append(String.format("%02d", seconds)).append("</div>");
+                    html.append(String.format("%02d:%02d", minutes, seconds));
                 }
                 html.append("</div>");
-                html.append("<div style='clear: both;'></div>");
+                html.append("</div>");
+                html.append("<div style='position: absolute; right: 10px; top: 10px;'><img src='bow.png' alt='Bow' style='width: 20px; height: 20px;'></div>");
                 html.append("</div>");
             }
         } else {
             html.append("<p>No top tracks found.</p>");
         }
-
         html.append("<h2>Your Top Artists</h2>");
         if (!topArtists.isEmpty()) {
             for (String artist : topArtists) {
@@ -129,6 +135,8 @@ public class HomeController {
         } else {
             html.append("<p>No top artists found.</p>");
         }
+        html.append("</div>");
+        html.append("</div>");
 
         return welcome + html.toString();
     }
